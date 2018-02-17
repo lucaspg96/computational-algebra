@@ -13,6 +13,8 @@ class Matrix(m: Int, n: Int) {
   def rowAsVector(r: Int): Vector = new Vector(matrix(r):_*)
   def columnAsVector(c: Int): Vector = new Vector((for(r <- matrix) yield r(c)):_*)
 
+  override def toString: String = (for(row <- matrix) yield row mkString("|",",","|")) mkString("\n")
+
   def map(f: MatrixValue => Double): Matrix = {
     val result = new Matrix(m,n)
 
@@ -37,4 +39,14 @@ class Matrix(m: Int, n: Int) {
       case MatrixValue(i,j,_) => this.rowAsVector(i)*b.columnAsVector(j)
     }
     else throw new Error("Can't multiply matrices with shapes "+shape+" and "+b.shape)
+
+  def ==(b: Matrix): Boolean = {
+    for{
+      i <- 0 until m
+      j <- 0 until n
+    } if(this(i)(j) != b(i)(j)) false
+
+    true
+  }
+
 }
