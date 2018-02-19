@@ -3,6 +3,8 @@ import org.scalatest.{FunSuite, Matchers}
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 
+import scala.math.abs
+
 import entities.{Vector,Matrix}
 
 @RunWith(classOf[JUnitRunner])
@@ -35,17 +37,17 @@ class MatrixTest extends FunSuite with Matchers {
 
   test("matrix determinant"){
     val m = new Matrix(3)
-    m set (0,0,2)
-    m set (0,1,5)
-    m set (0,2,6)
-    m set (1,0,1)
-    m set (1,1,6)
-    m set (1,2,7)
-    m set (2,0,-1)
-    m set (2,1,2)
-    m set (2,2,3)
+    m set (0,0,0)
+    m set (0,1,2)
+    m set (0,2,3)
+    m set (1,0,4)
+    m set (1,1,5)
+    m set (1,2,6)
+    m set (2,0,7)
+    m set (2,1,8)
+    m set (2,2,9)
 
-    assert(m.determinant === (6.0 +- 0.001))
+    assert(abs(m.determinant-3) <= 0.0001)
   }
 
   test("component as vector"){

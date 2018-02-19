@@ -80,7 +80,7 @@ class Matrix(m: Int, n: Int) {
       i <- 0 until n //row
       j <- i+1 until n //column
     }{
-      if(this(i)(i)==0) {
+      if(auxiliar_matrix(i)(i)==0) {
         d = -d
         auxiliar_matrix = auxiliar_matrix.pivote(i)
       }
