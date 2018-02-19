@@ -1,14 +1,25 @@
 import org.scalatest.{FunSuite, Matchers}
-
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 
 import scala.math.abs
-
-import entities.{Vector,Matrix}
+import entities.{Matrix, Vector}
+import helpers.{MatrixHelper, VectorHelper}
 
 @RunWith(classOf[JUnitRunner])
 class MatrixTest extends FunSuite with Matchers {
+
+  test("loading matrix"){
+    val m = MatrixHelper.loadFromFile(getClass.getResource("/test_matrix.txt").getPath)
+
+    val m1 = new Matrix(2)
+    m1 set(0,0,1)
+    m1 set(0,1,2)
+    m1 set(1,0,3)
+    m1 set(1,1,4)
+
+    assert(m==m1)
+  }
 
   test("matrix get and set") {
     val m = new Matrix(2)

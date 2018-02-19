@@ -1,11 +1,17 @@
 import org.scalatest.FunSuite
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
-
-import entities.{VectorHelper,Vector}
+import entities.Vector
+import helpers.VectorHelper
 
 @RunWith(classOf[JUnitRunner])
 class VectorTest extends FunSuite{
+
+  test("loading vector"){
+    val vector = VectorHelper.loadFromFile(getClass.getResource("/test_vector.txt").getPath)
+
+    assert(vector == new Vector(1,2,3))
+  }
 
   test("vector basic methods") {
     val v = new Vector(1,2,3)

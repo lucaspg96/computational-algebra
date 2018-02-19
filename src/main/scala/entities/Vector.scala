@@ -53,7 +53,3 @@ class Vector(vs: Double*) {
     else new Vector(this(1)*b(2) - this(2)*b(1), this(2)*b(0) - this(0)*b(2), this(0)*b(1) - this(1)*b(0))
 
 }
-
-object VectorHelper {
-  def createVector(n: Int, fill: Double = 0) = new Vector(Array.fill[Double](n)(fill):_*)
-}
