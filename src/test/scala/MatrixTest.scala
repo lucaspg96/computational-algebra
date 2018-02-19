@@ -1,4 +1,4 @@
-import org.scalatest.FunSuite
+import org.scalatest.{FunSuite, Matchers}
 
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
@@ -6,7 +6,7 @@ import org.scalatest.junit.JUnitRunner
 import entities.{Vector,Matrix}
 
 @RunWith(classOf[JUnitRunner])
-class MatrixTest extends FunSuite {
+class MatrixTest extends FunSuite with Matchers {
 
   test("matrix get and set") {
     val m = new Matrix(2)
@@ -15,6 +15,37 @@ class MatrixTest extends FunSuite {
 
     m set (0,0,1)
     assert(m(0)(0)==1)
+  }
+
+  test("transposing matrix"){
+    val m1 = new Matrix(2)
+    m1 set(0,0,1)
+    m1 set(0,1,2)
+    m1 set(1,0,3)
+    m1 set(1,1,4)
+
+    val m2 = new Matrix(2)
+    m2 set(0,0,1)
+    m2 set(0,1,3)
+    m2 set(1,0,2)
+    m2 set(1,1,4)
+
+    assert(m1.transpose == m2)
+  }
+
+  test("matrix determinant"){
+    val m = new Matrix(3)
+    m set (0,0,2)
+    m set (0,1,5)
+    m set (0,2,6)
+    m set (1,0,1)
+    m set (1,1,6)
+    m set (1,2,7)
+    m set (2,0,-1)
+    m set (2,1,2)
+    m set (2,2,3)
+
+    assert(m.determinant === (6.0 +- 0.001))
   }
 
   test("component as vector"){
@@ -94,7 +125,14 @@ class MatrixTest extends FunSuite {
     m3 set(1,0,8)
     m3 set(1,1,5)
 
+    val m4 = new Matrix(2)
+    m4 set(0,0,3)
+    m4 set(0,1,6)
+    m4 set(1,0,9)
+    m4 set(1,1,12)
+
     assert( m1*m2 == m3)
+    assert (m1*3 == m4)
   }
 
 }

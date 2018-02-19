@@ -35,6 +35,8 @@ class Vector(vs: Double*) {
     if(length == b.length) this map {case(i,v) => v-b(i)}
     else throw new Error("Vectors must have same lenght")
 
+  def *(n: Double): Vector = this map {case(_,v) => v*n}
+
   //Scalar product
   def *(b: Vector): Double =
     if(length == b.length) (this map {case(i,v) => v*b(i)}).sum

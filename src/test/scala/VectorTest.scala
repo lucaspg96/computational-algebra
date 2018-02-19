@@ -57,6 +57,7 @@ class VectorTest extends FunSuite{
     val v2 = new Vector(1,1,1)
 
     assert(v1*v2 == 6)
+    assert(v1*3 == new Vector(3,6,9))
     assert(v1**v2 == new Vector(1,2,3))
     assert((v1^v2) == new Vector(-1,2,-1))
   }
