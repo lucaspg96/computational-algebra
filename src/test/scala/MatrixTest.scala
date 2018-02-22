@@ -30,6 +30,24 @@ class MatrixTest extends FunSuite with Matchers {
     assert(m(0)(0)==1)
   }
 
+  test("set row") {
+    val m1 = new Matrix(2)
+    m1 set(0,0,1)
+    m1 set(0,1,2)
+    m1 set(1,0,3)
+    m1 set(1,1,4)
+
+    m1 setRow(1,new Vector(3,4))
+
+    val m2 = new Matrix(2)
+    m2 set(0,0,3)
+    m2 set(0,1,4)
+    m2 set(1,0,3)
+    m2 set(1,1,4)
+
+    assert(m1==m2)
+  }
+
   test("transposing matrix"){
     val m1 = new Matrix(2)
     m1 set(0,0,1)
@@ -148,4 +166,29 @@ class MatrixTest extends FunSuite with Matchers {
     assert (m1*3 == m4)
   }
 
+  test("gauss jordan"){
+    val m1 = new Matrix(3)
+    m1 set (0,0,1)
+    m1 set (0,1,2)
+    m1 set (0,2,3)
+    m1 set (1,0,4)
+    m1 set (1,1,5)
+    m1 set (1,2,6)
+    m1 set (2,0,7)
+    m1 set (2,1,8)
+    m1 set (2,2,9)
+
+    val m2 = new Matrix(3)
+    m2 set (0,0,1)
+    m2 set (0,1,0)
+    m2 set (0,2,-1)
+    m2 set (1,0,-0.0)
+    m2 set (1,1,1)
+    m2 set (1,2,2)
+    m2 set (2,0,0)
+    m2 set (2,1,0)
+    m2 set (2,2,0)
+
+    assert(m1.gaussJordanElimination==m2)
+  }
 }

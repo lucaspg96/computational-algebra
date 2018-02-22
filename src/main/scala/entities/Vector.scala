@@ -27,6 +27,9 @@ class Vector(vs: Double*) {
     true
   }
 
+  def mkString(p: String): String = values mkString(p)
+  def mkString(s: String,p: String, e: String): String = values mkString(s,p,e)
+
   def +(b: Vector): Vector =
     if(length == b.length) this map {case(i,v) => v+b(i)}
     else throw new Error("Vectors must have same lenght")

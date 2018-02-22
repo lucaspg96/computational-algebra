@@ -1,16 +1,18 @@
 package entities
 
+import helpers.VectorHelper
+
 class Matrix(m: Int, n: Int) {
-  val matrix = Array.ofDim[Double](m,n)
+  val matrix = for(_ <- 1 to m) yield VectorHelper.createVector(n)
 
   def this(n: Int) = this(n,n)
 
   def shape: (Int,Int) = (m,n)
 
   def apply(i: Int)(j: Int): Double = matrix(i)(j)
-  def set(i: Int, j: Int, v: Double): Unit = matrix(i)(j) = v
+  def set(i: Int, j: Int, v: Double): Unit = matrix(i).set(j,v)
 
-  def rowAsVector(r: Int): Vector = new Vector(matrix(r):_*)
+  def rowAsVector(r: Int): Vector = matrix(r)
   def columnAsVector(c: Int): Vector = new Vector((for(r <- matrix) yield r(c)):_*)
 
   override def toString: String = (for(row <- matrix) yield row mkString("|",",","|")) mkString("\n")
@@ -70,6 +72,64 @@ class Matrix(m: Int, n: Int) {
 
   }
 
+  def setRow(r: Int,row: Vector): Unit = {
+    if(row.length!=n) throw new Error("Can't set row with length "+row.length+" on matrix with shape "+shape)
+
+    for(c <- 0 until n) this.set(r,c,row(c))
+  }
+
+  def gaussianElimination: Matrix = {
+    if(m!=n) throw new Error("Operation not defined to non-square matrices")
+
+    var auxiliar_matrix = this copy
+    var d = 1
+
+    for{
+      i <- 0 until n //row
+      j <- i+1 until n //following row
+    }{
+      if(auxiliar_matrix(i)(i)==0) {
+        d = -d
+        auxiliar_matrix = auxiliar_matrix.pivote(i)
+      }
+
+      val m = -auxiliar_matrix(j)(i)/auxiliar_matrix(i)(i)
+
+      for(k <- i until n) {
+        val v = auxiliar_matrix(j)(k) + m*auxiliar_matrix(i)(k)
+        auxiliar_matrix.set(j,k,v)
+      }
+    }
+
+    auxiliar_matrix
+  }
+
+  def gaussJordanElimination: Matrix = {
+    var auxiliar_matrix = this.gaussianElimination
+
+    for{
+      i <- n-1 to 0 by -1 //row
+      j <- i-1 to 0 by -1 //following row
+    }{
+      var baseRow = auxiliar_matrix.rowAsVector(i)
+      if(baseRow(i)!=0){
+        baseRow = baseRow*(1/baseRow(i))
+        auxiliar_matrix.setRow(i,baseRow)
+      }
+
+
+      val targetRow = auxiliar_matrix.rowAsVector(j)
+
+      val m =  -targetRow(i)
+
+      val newRow = (baseRow*m)+targetRow
+      auxiliar_matrix.setRow(j,newRow)
+
+    }
+
+    auxiliar_matrix
+  }
+
   def determinant: Double = {
     if(m!=n) throw new Error("Operation not defined to non-square matrices")
 
@@ -78,7 +138,7 @@ class Matrix(m: Int, n: Int) {
 
     for{
       i <- 0 until n //row
-      j <- i+1 until n //column
+      j <- i+1 until n //following row
     }{
       if(auxiliar_matrix(i)(i)==0) {
         d = -d
