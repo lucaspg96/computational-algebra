@@ -10,7 +10,7 @@ class Matrix(m: Int, n: Int) {
   def shape: (Int,Int) = (m,n)
 
   def apply(i: Int)(j: Int): Double = matrix(i)(j)
-  def set(i: Int, j: Int, v: Double): Unit = matrix(i).set(j,v)
+  def set(p: (Int,Int), v: Double): Unit = matrix(p._1).set(p._2,v)
 
   def rowAsVector(r: Int): Vector = matrix(r)
   def columnAsVector(c: Int): Vector = new Vector((for(r <- matrix) yield r(c)):_*)
@@ -25,7 +25,7 @@ class Matrix(m: Int, n: Int) {
     for{
       i <- 0 until m
       j <- 0 until n
-    } result.set(i,j,f(new MatrixValue(i,j,this(i)(j))))
+    } result.set((i,j),f(new MatrixValue(i,j,this(i)(j))))
 
     result
   }
@@ -75,7 +75,7 @@ class Matrix(m: Int, n: Int) {
   def setRow(r: Int,row: Vector): Unit = {
     if(row.length!=n) throw new Error("Can't set row with length "+row.length+" on matrix with shape "+shape)
 
-    for(c <- 0 until n) this.set(r,c,row(c))
+    for(c <- 0 until n) this.set((r,c),row(c))
   }
 
   def gaussianElimination: Matrix = {
@@ -97,7 +97,7 @@ class Matrix(m: Int, n: Int) {
 
       for(k <- i until n) {
         val v = auxiliar_matrix(j)(k) + m*auxiliar_matrix(i)(k)
-        auxiliar_matrix.set(j,k,v)
+        auxiliar_matrix.set((j,k),v)
       }
     }
 
@@ -146,11 +146,11 @@ class Matrix(m: Int, n: Int) {
       }
 
       val m = -auxiliar_matrix(j)(i)/auxiliar_matrix(i)(i)
-      auxiliar_matrix.set(j,i,0)
+      auxiliar_matrix.set((j,i),0)
 
       for(k <- i+1 until n) {
         val v = auxiliar_matrix(j)(k) + m*auxiliar_matrix(i)(k)
-        auxiliar_matrix.set(j,k,v)
+        auxiliar_matrix.set((j,k),v)
       }
     }
 

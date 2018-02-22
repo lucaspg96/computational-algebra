@@ -21,7 +21,7 @@ object MatrixHelper {
     for{
       i <- 0 until result.shape._1
       j <- 0 until result.shape._2
-    } result.set(i,j,vectors(i)(j))
+    } result.set((i,j),vectors(i)(j))
 
     result
   }
