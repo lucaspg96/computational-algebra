@@ -46,6 +46,8 @@ class Matrix(m: Int, n: Int) {
     }
     else throw new Error("Can't multiply matrices with shapes "+shape+" and "+b.shape)
 
+  def *(v: Vector): Vector = new Vector((for(i <- 0 until m) yield rowAsVector(i)*v):_*)
+
   def *(n: Double): Matrix = this map {case MatrixValue(_,_,v) => v*n}
 
   def ==(b: Matrix): Boolean = {

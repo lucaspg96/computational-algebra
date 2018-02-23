@@ -4,7 +4,7 @@ import org.scalatest.junit.JUnitRunner
 
 import scala.math.abs
 import entities.{Matrix, Vector}
-import helpers.{MatrixHelper, VectorHelper}
+import helpers.MatrixHelper
 
 @RunWith(classOf[JUnitRunner])
 class MatrixTest extends FunSuite with Matchers {
@@ -164,6 +164,7 @@ class MatrixTest extends FunSuite with Matchers {
 
     assert( m1*m2 == m3)
     assert (m1*3 == m4)
+    assert(m1 * new Vector(1,2) == new Vector(5,11))
   }
 
   test("gauss jordan"){
