@@ -1,6 +1,6 @@
 package helpers
 
-import entities.Matrix
+import entities.{Matrix, MatrixValue}
 
 import scala.io.Source
 
@@ -25,4 +25,7 @@ object MatrixHelper {
 
     result
   }
+
+  def getIdentity(m: Int,n: Int): Matrix = new Matrix(m,n) map {case MatrixValue(i,j,_) => if(i==j) 1.0 else 0.0}
+  def getIdentity(n: Int): Matrix = getIdentity(n,n)
 }

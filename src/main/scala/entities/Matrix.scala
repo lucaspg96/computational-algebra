@@ -51,12 +51,17 @@ class Matrix(m: Int, n: Int) {
   def *(n: Double): Matrix = this map {case MatrixValue(_,_,v) => v*n}
 
   def ==(b: Matrix): Boolean = {
-    for{
-      i <- 0 until m
-      j <- 0 until n
-    } if(this(i)(j) != b(i)(j)) false
+    if(b.shape != shape) false
 
-    true
+    else{
+      for{
+        i <- 0 until m
+        j <- 0 until n
+      } if(this(i)(j) != b(i)(j)) false
+
+      true
+    }
+
   }
 
   private def partialPivote(k: Int): Matrix = {
