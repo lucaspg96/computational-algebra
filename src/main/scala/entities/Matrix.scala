@@ -1,20 +1,20 @@
 package entities
 
-import helpers.VectorHelper
+import helpers.{MatrixHelper, VectorHelper}
 
 class Matrix(m: Int, n: Int) {
   val matrix = for(_ <- 1 to m) yield VectorHelper.createVector(n)
-
+  private lazy val inverse: Option[Matrix] = gaussJordanInverse
   def this(n: Int) = this(n,n)
 
   def shape: (Int,Int) = (m,n)
-
+  def hasInverse: Boolean = inverse.isDefined
   def apply(i: Int)(j: Int): Double = matrix(i)(j)
   def set(p: (Int,Int), v: Double): Unit = matrix(p._1).set(p._2,v)
 
   def rowAsVector(r: Int): Vector = matrix(r)
   def columnAsVector(c: Int): Vector = new Vector((for(r <- matrix) yield r(c)):_*)
-
+  def getInverse: Matrix = inverse.get
   override def toString: String = (for(row <- matrix) yield row mkString("|",",","|")) mkString("\n")
 
   def copy: Matrix = this map {case MatrixValue(_,_,v) => v}
@@ -85,57 +85,6 @@ class Matrix(m: Int, n: Int) {
     for(c <- 0 until n) this.set((r,c),row(c))
   }
 
-  def gaussianElimination: Matrix = {
-    if(m!=n) throw new Error("Operation not defined to non-square matrices")
-
-    var auxiliar_matrix = this copy
-    var d = 1
-
-    for{
-      i <- 0 until n //row
-      j <- i+1 until n //following row
-    }{
-      if(auxiliar_matrix(i)(i)==0) {
-       throw new Error("Can't apply guassian elimination. 0 found during it")
-      }
-
-      val m = -auxiliar_matrix(j)(i)/auxiliar_matrix(i)(i)
-
-      for(k <- i until n) {
-        val v = auxiliar_matrix(j)(k) + m*auxiliar_matrix(i)(k)
-        auxiliar_matrix.set((j,k),v)
-      }
-    }
-
-    auxiliar_matrix
-  }
-
-  def gaussJordanElimination: Matrix = {
-    var auxiliar_matrix = this.gaussianElimination
-
-    for{
-      i <- n-1 to 0 by -1 //row
-      j <- i-1 to 0 by -1 //following row
-    }{
-      var baseRow = auxiliar_matrix.rowAsVector(i)
-      if(baseRow(i)!=0){
-        baseRow = baseRow*(1/baseRow(i))
-        auxiliar_matrix.setRow(i,baseRow)
-      }
-
-
-      val targetRow = auxiliar_matrix.rowAsVector(j)
-
-      val m =  -targetRow(i)
-
-      val newRow = (baseRow*m)+targetRow
-      auxiliar_matrix.setRow(j,newRow)
-
-    }
-
-    auxiliar_matrix
-  }
-
   def determinant: Double = {
     if(m!=n) throw new Error("Operation not defined to non-square matrices")
 
@@ -161,6 +110,80 @@ class Matrix(m: Int, n: Int) {
     }
 
     (for(i <- 0 until n) yield auxiliar_matrix(i)(i)).product * d
+  }
+
+  def gaussJordanInverse: Option[Matrix] = {
+    if(m!=n) throw new Error("Only square matrices can have inverse!")
+
+    val inverse = MatrixHelper.getIdentity(m)
+    var auxiliar_matrix = copy
+
+//    println(auxiliar_matrix)
+//    println()
+//    println(inverse)
+//    println("---------------")
+    for{
+      i <- 0 until n //row
+      j <- i+1 until n //following row
+    }{
+      if(auxiliar_matrix(i)(i)==0) {
+        println("0 found at diagonal "+i)
+        return None
+      }
+
+      var baseRow = auxiliar_matrix.rowAsVector(i) //row i
+      var inverseBaseRow = inverse.rowAsVector(i) //inverse row i
+
+      val targetRow = auxiliar_matrix.rowAsVector(j) //row j
+      val inverseTargetRow = inverse.rowAsVector(j) //inverse row j
+
+      val alpha = -auxiliar_matrix(j)(i)/auxiliar_matrix(i)(i) //signal is inverted
+
+      val newRow = (baseRow*alpha)+targetRow
+      auxiliar_matrix.setRow(j,newRow)
+
+      val newInverseRow = (inverseBaseRow*alpha)+inverseTargetRow
+      inverse.setRow(j,newInverseRow)
+
+//      println(auxiliar_matrix)
+//      println()
+//      println(inverse)
+//      println("---------------")
+    }
+
+    for{
+      i <- n-1 until 0 by -1 //row
+      j <- i-1 to 0 by -1 //upper row
+    }{
+      var baseRow = auxiliar_matrix.rowAsVector(i) //row i
+      var inverseBaseRow = inverse.rowAsVector(i) //inverse row i
+
+      //dividing row by pivot value
+      inverseBaseRow = inverseBaseRow*(1/baseRow(i))
+      inverse.setRow(i,inverseBaseRow)
+
+      baseRow = baseRow*(1/baseRow(i))
+      auxiliar_matrix.setRow(i,baseRow)
+
+      val targetRow = auxiliar_matrix.rowAsVector(j) //row j
+      val inverseTargetRow = inverse.rowAsVector(j) //inverse row j
+
+      val alpha = -auxiliar_matrix(j)(i) //signal is inverted
+
+      val newRow = (baseRow*alpha)+targetRow
+      auxiliar_matrix.setRow(j,newRow)
+
+      val newInverseRow = (inverseBaseRow*alpha)+inverseTargetRow
+      inverse.setRow(j,newInverseRow)
+
+//      println(auxiliar_matrix)
+//      println()
+//      println(inverse)
+//      println("---------------")
+    }
+
+    Some(inverse)
+
   }
 
 }

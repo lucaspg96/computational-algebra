@@ -167,29 +167,33 @@ class MatrixTest extends FunSuite with Matchers {
     assert(m1 * new Vector(1,2) == new Vector(5,11))
   }
 
-  test("gauss jordan"){
-    val m1 = new Matrix(3)
-    m1 set ((0,0),1)
-    m1 set ((0,1),2)
-    m1 set ((0,2),3)
-    m1 set ((1,0),4)
-    m1 set ((1,1),5)
-    m1 set ((1,2),6)
-    m1 set ((2,0),7)
-    m1 set ((2,1),8)
-    m1 set ((2,2),9)
+  test("inverse matrix"){
+    val A: Matrix = new Matrix(3)
+    A set ((0,0),1)
+    A set ((0,1),1)
+    A set ((0,2),-1)
 
-    val m2 = new Matrix(3)
-    m2 set ((0,0),1)
-    m2 set ((0,1),0)
-    m2 set ((0,2),-1)
-    m2 set ((1,0),-0.0)
-    m2 set ((1,1),1)
-    m2 set ((1,2),2)
-    m2 set ((2,0),0)
-    m2 set ((2,1),0)
-    m2 set ((2,2),0)
+    A set ((1,0),1)
+    A set ((1,1),-2)
+    A set ((1,2),5)
 
-    assert(m1.gaussJordanElimination==m2)
+    A set ((2,0),4)
+    A set ((2,1),1)
+    A set ((2,2),4)
+
+    val I: Matrix = new Matrix(3)
+    I set ((0,0),2.1666666666666665)
+    I set ((0,1),0.8333333333333333)
+    I set ((0,2),-0.5)
+
+    I set ((1,0),-2.6666666666666665)
+    I set ((1,1),-1.3333333333333333)
+    I set ((1,2),1.0)
+
+    I set ((2,0),-1.5)
+    I set ((2,1),-0.5)
+    I set ((2,2),0.5)
+
+    assert(A.getInverse == I)
   }
 }
