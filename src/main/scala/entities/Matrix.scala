@@ -59,7 +59,7 @@ class Matrix(m: Int, n: Int) {
     true
   }
 
-  private def pivote(k: Int): Matrix = {
+  private def partialPivote(k: Int): Matrix = {
     var swap = k
 
     for(i <- k+1 until n) {
@@ -91,8 +91,7 @@ class Matrix(m: Int, n: Int) {
       j <- i+1 until n //following row
     }{
       if(auxiliar_matrix(i)(i)==0) {
-        d = -d
-        auxiliar_matrix = auxiliar_matrix.pivote(i)
+       throw new Error("Can't apply guassian elimination. 0 found during it")
       }
 
       val m = -auxiliar_matrix(j)(i)/auxiliar_matrix(i)(i)
@@ -144,7 +143,7 @@ class Matrix(m: Int, n: Int) {
     }{
       if(auxiliar_matrix(i)(i)==0) {
         d = -d
-        auxiliar_matrix = auxiliar_matrix.pivote(i)
+        auxiliar_matrix = auxiliar_matrix.partialPivote(i)
       }
 
       val m = -auxiliar_matrix(j)(i)/auxiliar_matrix(i)(i)

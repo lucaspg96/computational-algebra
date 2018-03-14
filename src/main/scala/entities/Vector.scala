@@ -27,6 +27,8 @@ class Vector(vs: Double*) {
     true
   }
 
+  def copy: Vector = this map {case (_,v) => v}
+
   def mkString(p: String): String = values mkString(p)
   def mkString(s: String,p: String, e: String): String = values mkString(s,p,e)
 
