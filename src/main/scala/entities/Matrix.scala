@@ -12,6 +12,16 @@ class Matrix(m: Int, n: Int) {
   def apply(i: Int)(j: Int): Double = matrix(i)(j)
   def set(p: (Int,Int), v: Double): Unit = matrix(p._1).set(p._2,v)
 
+  def isSymmetric: Boolean = {
+    for{
+      i <- 0 until m
+      j <- 0 until n
+      if this(i)(j) != this(j)(i)
+    } return false
+
+    true
+  }
+
   def rowAsVector(r: Int): Vector = matrix(r)
   def columnAsVector(c: Int): Vector = new Vector((for(r <- matrix) yield r(c)):_*)
   def getInverse: Matrix = inverse.get
@@ -185,5 +195,4 @@ class Matrix(m: Int, n: Int) {
     Some(inverse)
 
   }
-
 }
