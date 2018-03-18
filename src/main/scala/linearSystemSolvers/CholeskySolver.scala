@@ -2,7 +2,7 @@ package linearSystemSolvers
 import entities.{Matrix,Vector}
 import math.sqrt
 
-class CholeskySolver extends Solver{
+object CholeskySolver extends Solver{
 
   def getCholeskyMatrix(A: Matrix): Matrix = {
 
@@ -15,15 +15,23 @@ class CholeskySolver extends Solver{
       i <- 0 until m
       j <- 0 until n
     }{
-      if (j==0)
-        if(i==0)
-          if(A(0)(0) >= 0) cholesky set ((i,j), sqrt(A(0)(0)))
+      if(i==j) { //diagonal
+        if (i == 0) //first
+          if (A(0)(0) >= 0) cholesky set((i, j), sqrt(A(0)(0)))
           else throw new Error("This matrix is not positive defined")
-        else cholesky set ((i,j), A(i)(j)/cholesky(0)(0))
 
-      else{
-        val gij = (A(i)(j) - (for(k <- 1 until j) yield cholesky(i)(k)*cholesky(j)(k)).sum) / cholesky(j)(j)
-        cholesky set ((i,j),gij)
+        else {
+          val gii = A(i)(i) - (for (k <- 0 until i) yield cholesky(i)(k) * cholesky(i)(k)).sum
+          if (gii < 0) throw new Error("This matrix is not positive defined")
+          else cholesky set((i, i), sqrt(gii))
+        }
+      }
+      else{ //lower triangle
+        if(j == 0) cholesky set ((i,0),A(i)(0)/cholesky(0)(0)) //first column
+        else { //other columns
+          val gij = (A(i)(j) - (for (k <- 0 until j) yield cholesky(i)(k) * cholesky(j)(k)).sum) / cholesky(j)(j)
+          cholesky set ((i,j),gij)
+        }
       }
 
     }
@@ -32,7 +40,11 @@ class CholeskySolver extends Solver{
   }
 
   def solve(A: Matrix, y: Vector): Vector = {
+    val cholesky = getCholeskyMatrix(A)
 
+    val z = FirstSolver(cholesky,y)
+
+    SecondSolver(cholesky transpose, z)
   }
 
   def FirstSolver(A: Matrix,y: Vector): Vector = {
@@ -79,5 +91,25 @@ class CholeskySolver extends Solver{
     }
 
     new Vector(solution.reverse:_*)
+  }
+
+  def main(args: Array[String]): Unit = {
+    val A: Matrix = new Matrix(3)
+    A set ((0,0),25)
+    A set ((0,1),15)
+    A set ((0,2),-5)
+
+    A set ((1,0),15)
+    A set ((1,1),18)
+    A set ((1,2),0)
+
+    A set ((2,0),-5)
+    A set ((2,1),0)
+    A set ((2,2),11)
+
+    val y: Vector = new Vector(-2, 0.25, 10.2)
+
+    val x = solve(A,y)
+    println("\n"+x)
   }
 }
