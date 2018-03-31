@@ -93,9 +93,9 @@ class Matrix(m: Int, n: Int) {
     if(row.length!=n) throw new Error("Can't set row with length "+row.length+" on matrix with shape "+shape)
     else for(c <- 0 until n) this.set((r,c),row(c))
 
-  def setColumn(c: Int,row: Vector): Unit =
-    if(row.length!=m) throw new Error("Can't set column with length "+row.length+" on matrix with shape "+shape)
-    else for(r <- 0 until m) this.set((r,c),row(c))
+  def setColumn(c: Int,column: Vector): Unit =
+    if(column.length!=m) throw new Error("Can't set column with length "+column.length+" on matrix with shape "+shape)
+    else for(r <- 0 until m) this.set((r,c),column(r))
 
   def determinant: Double = {
     if(m!=n) throw new Error("Operation not defined to non-square matrices")
