@@ -3,7 +3,7 @@ package entities
 import helpers.{MatrixHelper, VectorHelper}
 
 class Matrix(m: Int, n: Int) {
-  val matrix = for(_ <- 1 to m) yield VectorHelper.createVector(n)
+  val matrix: Array[Vector] = (for(_ <- 1 to m) yield VectorHelper.createVector(n)).toArray
   private lazy val inverse: Option[Matrix] = gaussJordanInverse
   def this(n: Int) = this(n,n)
 
@@ -25,7 +25,7 @@ class Matrix(m: Int, n: Int) {
   def rowAsVector(r: Int): Vector = matrix(r)
   def columnAsVector(c: Int): Vector = new Vector((for(r <- matrix) yield r(c)):_*)
   def getInverse: Matrix = inverse.get
-  override def toString: String = (for(row <- matrix) yield row mkString("|",",","|")) mkString("\n")
+  override def toString: String = (for(row <- matrix) yield row mkString("|",",","|")) mkString "\n"
 
   def copy: Matrix = this map {case MatrixValue(_,_,v) => v}
 
@@ -35,7 +35,7 @@ class Matrix(m: Int, n: Int) {
     for{
       i <- 0 until m
       j <- 0 until n
-    } result.set((i,j),f(new MatrixValue(i,j,this(i)(j))))
+    } result.set((i,j),f(MatrixValue(i,j,this(i)(j))))
 
     result
   }
@@ -89,16 +89,18 @@ class Matrix(m: Int, n: Int) {
 
   }
 
-  def setRow(r: Int,row: Vector): Unit = {
+  def setRow(r: Int,row: Vector): Unit =
     if(row.length!=n) throw new Error("Can't set row with length "+row.length+" on matrix with shape "+shape)
+    else for(c <- 0 until n) this.set((r,c),row(c))
 
-    for(c <- 0 until n) this.set((r,c),row(c))
-  }
+  def setColumn(c: Int,row: Vector): Unit =
+    if(row.length!=m) throw new Error("Can't set column with length "+row.length+" on matrix with shape "+shape)
+    else for(r <- 0 until m) this.set((r,c),row(c))
 
   def determinant: Double = {
     if(m!=n) throw new Error("Operation not defined to non-square matrices")
 
-    var auxiliar_matrix = this copy
+    var auxiliar_matrix = this.copy
     var d = 1
 
     for{
@@ -126,7 +128,7 @@ class Matrix(m: Int, n: Int) {
     if(m!=n) throw new Error("Only square matrices can have inverse!")
 
     val inverse = MatrixHelper.getIdentity(m)
-    var auxiliar_matrix = copy
+    val auxiliar_matrix = copy
 
 //    println(auxiliar_matrix)
 //    println()
@@ -141,8 +143,8 @@ class Matrix(m: Int, n: Int) {
         return None
       }
 
-      var baseRow = auxiliar_matrix.rowAsVector(i) //row i
-      var inverseBaseRow = inverse.rowAsVector(i) //inverse row i
+      val baseRow = auxiliar_matrix.rowAsVector(i) //row i
+      val inverseBaseRow = inverse.rowAsVector(i) //inverse row i
 
       val targetRow = auxiliar_matrix.rowAsVector(j) //row j
       val inverseTargetRow = inverse.rowAsVector(j) //inverse row j
