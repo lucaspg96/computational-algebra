@@ -12,6 +12,20 @@ class Vector(vs: Double*) {
   def apply(i: Int): Double = values(i)
   def set(i: Int, v: Double): Unit = values(i) = v
 
+  def transpose: Matrix = {
+    val T = new Matrix(length,1)
+
+    for(i <- 0 until length) T set ((i,0),this(i))
+
+    T
+  }
+
+  def asMatrix: Matrix = {
+    val A = new Matrix(1,length)
+    A setRow (0,this)
+    A
+  }
+
   def sum: Double = values.sum
 
   override def toString: String = values mkString("[",",","]")
