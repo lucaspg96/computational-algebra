@@ -47,6 +47,14 @@ class Matrix(m: Int, n: Int) {
     result
   }
 
+  def isOrtogonal: Boolean = {
+    for(c <- 0 until n) {
+      if(math.abs(columnAsVector(c).norm-1)>0.0001) return false
+    }
+
+    return this * this.transpose == MatrixHelper.getIdentity(m)
+  }
+
   def transpose: Matrix = this map { case MatrixValue(i, j, _) => matrix(j)(i) }
 
   def +(b: Matrix): Matrix =
