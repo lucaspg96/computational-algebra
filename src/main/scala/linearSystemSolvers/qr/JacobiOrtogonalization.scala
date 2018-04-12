@@ -1,6 +1,6 @@
 package linearSystemSolvers.qr
 
-import entities.Matrix
+import entities.{Matrix, MatrixValue}
 import helpers.MatrixHelper
 
 trait JacobiOrtogonalization extends QRConstructor {
@@ -19,16 +19,17 @@ trait JacobiOrtogonalization extends QRConstructor {
         Ai = JijT * Ai
         Jt = JijT * Jt
 
-        println("\nAi:")
-        println(Ai)
-
-//        println("\nJ:")
+//        println("\nAi:")
+//        println(Ai)
+//
+//        println("\nJt:")
 //        println(Jt)
       }
       println(noise(Ai))
           }while(noise(Ai) > 0.001)
-//    }while(false)
-    val R = Jt * A
+
+    val R = Ai map {case MatrixValue(i,j,v) => if(i > j) 0 else v}
+//    val R = Ai
 //    println("JQ:\n"+Jt.transpose*R)
     (Jt.transpose,R)
   }

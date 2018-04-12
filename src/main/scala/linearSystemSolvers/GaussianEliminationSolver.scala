@@ -172,23 +172,39 @@ object GaussianEliminationSolver extends Solver {
   }
 
   def main(args: Array[String]): Unit = {
-    val A: Matrix = new Matrix(3)
-    A set ((0,0),1)
-    A set ((0,1),1)
-    A set ((0,2),-1)
+//    val A: Matrix = new Matrix(3)
+//    A set ((0,0),1)
+//    A set ((0,1),1)
+//    A set ((0,2),-1)
+//
+//    A set ((1,0),1)
+//    A set ((1,1),-2)
+//    A set ((1,2),5)
+//
+//    A set ((2,0),4)
+//    A set ((2,1),1)
+//    A set ((2,2),4)
+//
+//    val solution = new Vector(2,3,5)
+//
+//    val y: Vector = new Vector(0, 21, 31)
 
-    A set ((1,0),1)
-    A set ((1,1),-2)
-    A set ((1,2),5)
+    val A: Matrix = new Matrix(4)
+    A setRow (0,new Vector(0.02,0.01,0,0))
+    A setRow (1,new Vector(1,2,1,0))
+    A setRow (2,new Vector(0,1,2,1))
+    A setRow (3,new Vector(0,0,100,200))
 
-    A set ((2,0),4)
-    A set ((2,1),1)
-    A set ((2,2),4)
+    val solution = new Vector(1, 0, 0, 4)
 
-    val y: Vector = new Vector(0, 21, 31)
+    val y: Vector = new Vector(0.02, 1, 4, 800)
 
-    setTotalPivote
+//    setTotalPivote
+    setNoPivote
     val x = solve(A,y)
-    println("\n"+x)
+
+    println("---------------------")
+    println("Solution: " + x)
+    println("Expected: " + solution)
   }
 }
