@@ -10,6 +10,8 @@ class Matrix(m: Int, n: Int) {
 
   def shape: (Int, Int) = (m, n)
 
+  def isSquare: Boolean = m==n
+
   def hasInverse: Boolean = inverse.isDefined
 
   def apply(i: Int)(j: Int): Double = matrix(i)(j)
