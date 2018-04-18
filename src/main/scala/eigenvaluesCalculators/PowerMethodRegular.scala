@@ -4,7 +4,7 @@ import entities.{Matrix, Vector}
 import helpers.VectorHelper
 
 object PowerMethodRegular extends EigenvaluesCalculator {
-  def calculate(A: Matrix, tolerance: Double = 0.001): Double = {
+  def calculate(A: Matrix, tolerance: Double = 0.001): (Double,Vector) = {
     if(!A.isSquare) throw new Error ("Matrix must be square!")
 
     var lambdaOld, lambda = 0.0
@@ -17,7 +17,7 @@ object PowerMethodRegular extends EigenvaluesCalculator {
       lambda = (q*(A*q))/(q*q)
     }while(relativeError(lambda,lambdaOld) > tolerance)
 
-    lambda
+    (lambda,q)
   }
 
   def relativeError(a: Double, b: Double):Double = math.abs(a-b)/a
@@ -27,13 +27,14 @@ object PowerMethodRegular extends EigenvaluesCalculator {
 
     A setRow (0,new Vector(1,2,3))
     A setRow (1,new Vector(4,5,6))
-    A setRow (2,new Vector(7,8,9))
+    A setRow (2,new Vector(7,8,10))
 
-    val solution = 16.1168
+    val solution = 16.7075
 
-    val lambda = calculate(A)
+    val (lambda,vector) = calculate(A)
 
     println(s"Expected: $solution")
     println(s"Result: $lambda")
+    println(vector)
   }
 }

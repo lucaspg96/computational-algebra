@@ -2,10 +2,10 @@ package eigenvaluesCalculators
 
 import entities.{Matrix, Vector}
 import helpers.VectorHelper
-import linearSystemSolvers.{CholeskySolver, GaussianEliminationSolver, LUSolver, QRSolver}
+import linearSystemSolvers.LUSolver
 
 object PowerMethodInverse extends EigenvaluesCalculator {
-  def calculate(A: Matrix, tolerance: Double = 0.001): Double = {
+  def calculate(A: Matrix, tolerance: Double = 0.001): (Double, Vector) = {
     if(!A.isSquare) throw new Error ("Matrix must be square!")
 
     var lambdaOld, lambda = 0.0
@@ -22,7 +22,7 @@ object PowerMethodInverse extends EigenvaluesCalculator {
 //      println(s"lambda: $lambda")
     }while(relativeError(lambda,lambdaOld) > tolerance)
 
-    lambda
+    (lambda,q*(-1))
   }
 
   def relativeError(a: Double, b: Double):Double = math.abs(a-b)/a
@@ -36,9 +36,11 @@ object PowerMethodInverse extends EigenvaluesCalculator {
 
     val solution = 0.1982
 
-    val lambda = calculate(A)
+    val (lambda, vector) = calculate(A)
 
     println(s"Expected: $solution")
     println(s"Result: $lambda")
+
+    println(vector)
   }
 }
