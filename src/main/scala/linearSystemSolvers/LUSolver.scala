@@ -9,6 +9,7 @@ object LUSolver extends Solver{
   def solve(A: Matrix, y: Vector): Vector = {
 
     if(!(A==currentDecomposedMatrix)){
+//      println("Nova matriz")
       val (l,u) = getLU(A)
       L = l
       U = u
@@ -19,7 +20,7 @@ object LUSolver extends Solver{
 //    println(y)
     val z = LSolver(L,y)
 
-    println()
+//    println()
 
 //    println(U)
 //    println()

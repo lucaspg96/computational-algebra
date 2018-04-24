@@ -87,12 +87,14 @@ class Matrix(m: Int, n: Int) {
       for {
         i <- 0 until m
         j <- 0 until n
-      } if (this (i)(j) != b(i)(j)) false
+      } if (this (i)(j) != b(i)(j)) return false
 
-      true
+      return true
     }
 
   }
+
+  def diagonalAsVector: Vector = new Vector((for (i <- 0 until m) yield this(i)(i)): _*)
 
   private def partialPivote(k: Int): Matrix = {
     var swap = k

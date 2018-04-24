@@ -8,8 +8,7 @@ object PowerMethodRegular extends EigenvaluesCalculator {
     if(!A.isSquare) throw new Error ("Matrix must be square!")
 
     var lambdaOld, lambda = 0.0
-    var q = VectorHelper.createVector(A.shape._1)
-    q set (1,1)
+    var q = VectorHelper.createVector(A.shape._1,fill = 1).normalized
 
     do{
       lambdaOld = lambda

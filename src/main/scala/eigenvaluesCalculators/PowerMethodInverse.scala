@@ -2,30 +2,31 @@ package eigenvaluesCalculators
 
 import entities.{Matrix, Vector}
 import helpers.VectorHelper
-import linearSystemSolvers.LUSolver
+import linearSystemSolvers.{GaussianEliminationSolver, LUSolver}
 
 object PowerMethodInverse extends EigenvaluesCalculator {
   def calculate(A: Matrix, tolerance: Double = 0.001): (Double, Vector) = {
     if(!A.isSquare) throw new Error ("Matrix must be square!")
 
-    var lambdaOld, lambda = 0.0
-    var q = VectorHelper.createVector(A.shape._1)
-    q set (1,1)
-
+    var lambdaOld, lambda = Double.MinValue
+    var q = VectorHelper.createVector(A.shape._1,fill = 1).normalized
+    GaussianEliminationSolver.setNoPivote
     do{
       lambdaOld = lambda
       val x = LUSolver.solve(A,q)
+//      val x = GaussianEliminationSolver.solve(A,q)
 //      println(s"x: $x")
       q = x.normalized
+//      println(s"q: $q")
 //      println(s"q: $q")
       lambda = (q*(A*q))/(q*q)
 //      println(s"lambda: $lambda")
     }while(relativeError(lambda,lambdaOld) > tolerance)
 
-    (lambda,q*(-1))
+    (lambda,q)
   }
 
-  def relativeError(a: Double, b: Double):Double = math.abs(a-b)/a
+  def relativeError(a: Double, b: Double):Double = math.abs(a-b)
 
   def main(args: Array[String]): Unit = {
     val A = new Matrix(3)

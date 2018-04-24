@@ -12,6 +12,8 @@ class Vector(vs: Double*) {
   def apply(i: Int): Double = values(i)
   def set(i: Int, v: Double): Unit = values(i) = v
 
+  def asList: List[Double] = values.toList
+
   def transpose: Matrix = {
     val T = new Matrix(length,1)
 
