@@ -3,8 +3,8 @@ import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 
 import scala.math.abs
-import entities.{Matrix, Vector}
-import helpers.MatrixHelper
+import entities.real.{Matrix, Vector}
+import helpers.real.MatrixHelper
 
 @RunWith(classOf[JUnitRunner])
 class MatrixTest extends FunSuite with Matchers {

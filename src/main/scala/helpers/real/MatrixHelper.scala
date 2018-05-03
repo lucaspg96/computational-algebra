@@ -1,6 +1,6 @@
-package helpers
+package helpers.real
 
-import entities.{Matrix, MatrixValue}
+import entities.real.{Matrix, MatrixValue}
 
 import scala.io.Source
 

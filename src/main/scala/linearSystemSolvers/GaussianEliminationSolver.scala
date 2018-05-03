@@ -1,5 +1,5 @@
 package linearSystemSolvers
-import entities.{Matrix, MatrixValue, Vector}
+import entities.real.{Matrix, Vector, MatrixValue}
 
 object GaussianEliminationSolver extends Solver {
   var pivoteType: Int = 1
@@ -8,9 +8,9 @@ object GaussianEliminationSolver extends Solver {
   def setPartialPivote = pivoteType = 1
   def setTotalPivote = pivoteType = 2
 
-  def solve(A: Matrix, y: entities.Vector): Vector = gaussianElimination(A,y)
+  def solve(A: Matrix, y: Vector): Vector = gaussianElimination(A,y)
 
-  private def partialPivote(A: Matrix, y: Vector,k: Int): (Matrix, Vector) = {
+  private def partialPivote(A: Matrix, y: Vector, k: Int): (Matrix, Vector) = {
     var swap = k
 
     for(i <- k+1 until A.shape._1) {
@@ -38,7 +38,7 @@ object GaussianEliminationSolver extends Solver {
 
   }
 
-  private def totalPivote(A: Matrix,y: Vector, indexes: List[Int],k: Int, l: Int): (Matrix, Vector, List[Int]) = {
+  private def totalPivote(A: Matrix, y: Vector, indexes: List[Int], k: Int, l: Int): (Matrix, Vector, List[Int]) = {
     val (m,n) = A.shape
     var swap = (k,l)
 

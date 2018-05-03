@@ -1,6 +1,6 @@
 package linearSystemSolvers
 
-import entities.{Matrix, Vector}
+import entities.real.{Matrix, Vector}
 import qr.{GramSchmidtOrtogonalization, HouseHolderOrtogonalization, JacobiOrtogonalization}
 
 object QRSolver extends Solver

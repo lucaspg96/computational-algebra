@@ -1,6 +1,6 @@
 package linearSystemSolvers.qr
 
-import entities.Matrix
+import entities.real.Matrix
 
 trait QRConstructor {
   var currentMatrix: Matrix = new Matrix(1)

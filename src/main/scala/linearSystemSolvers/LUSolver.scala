@@ -1,6 +1,6 @@
 package linearSystemSolvers
-import entities.{Matrix,Vector}
-import helpers.MatrixHelper
+import entities.real.{Matrix,Vector}
+import helpers.real.MatrixHelper
 
 object LUSolver extends Solver{
   var currentDecomposedMatrix: Matrix = MatrixHelper.getIdentity(2,2)

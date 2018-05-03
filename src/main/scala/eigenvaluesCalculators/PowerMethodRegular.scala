@@ -1,7 +1,7 @@
 package eigenvaluesCalculators
 
-import entities.{Matrix, Vector}
-import helpers.VectorHelper
+import entities.real.{Matrix, Vector}
+import helpers.real.VectorHelper
 
 object PowerMethodRegular extends EigenvaluesCalculator {
   def calculate(A: Matrix, tolerance: Double = 0.001): (Double,Vector) = {

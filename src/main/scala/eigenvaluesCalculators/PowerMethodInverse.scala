@@ -1,7 +1,7 @@
 package eigenvaluesCalculators
 
-import entities.{Matrix, Vector}
-import helpers.VectorHelper
+import entities.real.{Matrix,Vector}
+import helpers.real.VectorHelper
 import linearSystemSolvers.{GaussianEliminationSolver, LUSolver}
 
 object PowerMethodInverse extends EigenvaluesCalculator {

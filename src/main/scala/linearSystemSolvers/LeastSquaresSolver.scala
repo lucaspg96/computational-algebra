@@ -1,6 +1,6 @@
 package linearSystemSolvers
 
-import entities.{Matrix,Vector}
+import entities.real.{Matrix, Vector}
 
 object LeastSquaresSolver extends Solver{
 

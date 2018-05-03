@@ -1,8 +1,8 @@
+import entities.real.Vector
+import helpers.real.VectorHelper
 import org.scalatest.FunSuite
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
-import entities.Vector
-import helpers.VectorHelper
 
 @RunWith(classOf[JUnitRunner])
 class VectorTest extends FunSuite{

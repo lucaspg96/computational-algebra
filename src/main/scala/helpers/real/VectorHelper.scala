@@ -1,6 +1,6 @@
-package helpers
+package helpers.real
 
-import entities.Vector
+import entities.real.Vector
 
 import scala.io.Source
 

@@ -1,7 +1,7 @@
 package linearSystemSolvers.qr
 
-import entities.{Matrix, MatrixValue}
-import helpers.MatrixHelper
+import entities.real.{Matrix, MatrixValue}
+import helpers.real.MatrixHelper
 
 trait JacobiOrtogonalization extends QRConstructor {
 

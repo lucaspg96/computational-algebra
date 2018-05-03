@@ -1,6 +1,6 @@
-package entities
+package entities.real
 
-import scala.math.{sqrt}
+import scala.math.sqrt
 
 class Vector(vs: Double*) {
   val values = vs.toArray

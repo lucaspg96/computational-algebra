@@ -1,7 +1,7 @@
 package linearSystemSolvers.qr
 
-import entities.{Matrix, Vector}
-import helpers.{MatrixHelper, VectorHelper}
+import entities.real.{Matrix, Vector}
+import helpers.real.{MatrixHelper, VectorHelper}
 
 trait HouseHolderOrtogonalization extends QRConstructor {
   def calculateQR(A: Matrix): (Matrix,Matrix) = {

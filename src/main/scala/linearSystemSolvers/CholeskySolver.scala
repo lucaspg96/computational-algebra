@@ -1,5 +1,6 @@
 package linearSystemSolvers
-import entities.{Matrix,Vector}
+import entities.real.{Matrix, Vector}
+
 import math.sqrt
 
 object CholeskySolver extends Solver{

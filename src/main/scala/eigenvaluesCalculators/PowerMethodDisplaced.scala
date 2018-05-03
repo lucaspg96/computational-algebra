@@ -1,7 +1,7 @@
 package eigenvaluesCalculators
 
-import entities.{Matrix, Vector}
-import helpers.MatrixHelper
+import entities.real.{Matrix, Vector}
+import helpers.real.MatrixHelper
 
 object PowerMethodDisplaced {
   def calculate(A: Matrix, tolerance: Double = 0.001, step: Double = 0.3): (List[Double], List[Vector]) = {

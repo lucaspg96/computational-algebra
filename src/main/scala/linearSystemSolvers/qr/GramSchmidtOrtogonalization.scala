@@ -1,7 +1,7 @@
 package linearSystemSolvers.qr
 
-import entities.{Matrix, Vector}
-import helpers.VectorHelper
+import entities.real.{Matrix, Vector}
+import helpers.real.VectorHelper
 
 trait GramSchmidtOrtogonalization extends QRConstructor {
 
