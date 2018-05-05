@@ -19,11 +19,32 @@ object ComplexEigenvaluesCalculator {
       X = X*q
     }while(tridiagonalNoise(Ai)>tolerance)
 
-    if(A.isSymmetric) println("TD")
-    else if (isUT(Ai, tolerance)) println("UT")
-    else println("UH")
-    (List[Complex](),Ai)
+    if(A.isSymmetric) solveTD(Ai,X)
+    else if (isUT(Ai, tolerance)) solveUT(Ai,X)
+    else (List[Complex](),Ai)
+
   }
+
+  private def solveTD(A: ComplexMatrix, X: ComplexMatrix): (List[Complex], ComplexMatrix) =
+    (A.diagonalAsVector.asList, X)
+
+  private def solveUT(A: ComplexMatrix, X: ComplexMatrix): (List[Complex], ComplexMatrix) = {
+    val (m,n) = A.shape
+    val lambdas = A.diagonalAsVector.asList
+    val psi = ComplexMatrixHelper.getIdentity(m,n)
+
+    for{
+      i <- 1 until m
+      j <- i-1 to 0 by -1
+    }{
+      val s = (for(k <- j+1 to i-1 by -1) yield A(j)(k)*psi(k)(i)).foldLeft(Complex(0,0))((acc,c) => acc+c)
+      val xi = (-A(j)(i) - s)/(A(j)(j) - A(i)(i))
+      psi set ((i,j),xi)
+    }
+
+    (lambdas,psi)
+  }
+
 
   private def tridiagonalNoise(A: ComplexMatrix): Double =
     sqrt((for(j <- 0 until A.shape._2-1) yield !A(j+1)(j)).sum)
@@ -56,7 +77,7 @@ object ComplexEigenvaluesCalculator {
 
     val V2 = ComplexVectorHelper.createVector(A.shape._2)
     val v = if(Vj(j+1) > Complex(0,0)) -Vj.norm else Vj.norm
-    V2 set (j+1,v)
+    V2 set (j+1,Complex(v,0))
 
     val n = (Vj - V2).normalized
 
@@ -94,18 +115,18 @@ object ComplexEigenvaluesCalculator {
   def main(args: Array[String]): Unit = {
     val A = new Matrix(3)
 
-    //UT
-    A setRow (0,new Vector(1,2,3))
-    A setRow (1,new Vector(4,5,6))
-    A setRow (2,new Vector(7,8,10))
+//    //UT
+//    A setRow (0,new Vector(1,2,3))
+//    A setRow (1,new Vector(4,5,6))
+//    A setRow (2,new Vector(7,8,10))
 
 //    //TD
-//    A setRow (0,new Vector(1,2,3))
-//    A setRow (1,new Vector(2,5,6))
-//    A setRow (2,new Vector(3,6,10))
+    A setRow (0,new Vector(1,2,3))
+    A setRow (1,new Vector(2,5,6))
+    A setRow (2,new Vector(3,6,10))
 
     val (lambdas,vectors) = calculate(A.toComplex)
-
+    println(lambdas)
     println(vectors)
   }
 

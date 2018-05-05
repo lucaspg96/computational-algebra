@@ -210,6 +210,11 @@ class ComplexMatrix(m: Int, n: Int) {
     }
 
     Some(inverse)
+  }
 
+  def normalized: ComplexMatrix = {
+    val A = new ComplexMatrix(m,n)
+    for(c <- 0 until n) A setColumn(c, A columnAsVector c normalized)
+    A
   }
 }
