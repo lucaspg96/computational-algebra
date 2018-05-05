@@ -21,6 +21,12 @@ case class Complex(a: Double, b: Double) extends Ordered[Complex]{
   def == (c: Complex): Boolean = a == c.real && b == c.i
   def == (n: Double): Boolean = this == new Complex(n)
 
+  def != (c: Complex): Boolean = !(this == c)
+  def != (n: Double): Boolean = this != new Complex(n)
+
+  def >(n: Double): Boolean = this > Complex(n,0)
+  def <(n: Double): Boolean = this < Complex(n,0)
+
   def + (c: Complex): Complex = Complex(a+c.real,b+c.i)
   def + (n: Double): Complex = this + new Complex(n)
 
