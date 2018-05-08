@@ -8,7 +8,7 @@ import math.{sqrt,abs}
 
 object ComplexEigenvaluesCalculator {
 
-  def calculate(A: ComplexMatrix, tolerance: Double = 0.0001): (List[Complex], ComplexMatrix) = {
+  def calculate(A: ComplexMatrix, tolerance: Double = 0.000001): (List[Complex], ComplexMatrix) = {
     val (ai,x) = householder(A)
     var Ai = ai
     var X = x
@@ -19,7 +19,7 @@ object ComplexEigenvaluesCalculator {
       X = X * q
     }while(tridiagonalNoise(Ai)>tolerance)
 
-    println(Ai)
+//    println(Ai)
 
     if(A.isSymmetric) solveTD(Ai,X)
     else if (isUT(Ai, tolerance)) solveUT(Ai,X)
@@ -39,12 +39,15 @@ object ComplexEigenvaluesCalculator {
       i <- 1 until m
       j <- i-1 to 0 by -1
     }{
-      val s = (for(k <- j+1 to i-1 by -1) yield A(j)(k)*psi(k)(i)).foldLeft(Complex(0,0))((acc,c) => acc+c)
+      val s = (for(k <- j+1 to i-1 by -1) yield A(k)(j)*psi(k)(i))
+        .foldLeft(Complex(0,0))((acc,c) => acc+c)
       val xi = (-A(j)(i) - s)/(A(j)(j) - A(i)(i))
-      psi set ((i,j),xi)
+      psi set ((j,i),xi)
+      println("Psi: ")
+      println(psi)
     }
 
-    (lambdas,psi)
+    (lambdas,X*psi)
   }
 
 
