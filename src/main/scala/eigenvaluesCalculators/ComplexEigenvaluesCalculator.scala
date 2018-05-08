@@ -101,7 +101,7 @@ object ComplexEigenvaluesCalculator {
       Aj = Jjt * Aj
       Qt = Jjt * Qt
     }
-    println(s"Aj:\n$Aj")
+//    println(s"Aj:\n$Aj")
     (Qt.transpose, Aj)
   }
 
@@ -122,15 +122,15 @@ object ComplexEigenvaluesCalculator {
   def main(args: Array[String]): Unit = {
     val A = new Matrix(3)
 
-//    //UT
-//    A setRow (0,new Vector(1,2,3))
-//    A setRow (1,new Vector(4,5,6))
-//    A setRow (2,new Vector(7,8,10))
-
-    //TD
+    //UT
     A setRow (0,new Vector(1,2,3))
-    A setRow (1,new Vector(2,5,6))
-    A setRow (2,new Vector(3,6,10))
+    A setRow (1,new Vector(4,5,6))
+    A setRow (2,new Vector(7,8,10))
+
+//    //TD
+//    A setRow (0,new Vector(1,2,3))
+//    A setRow (1,new Vector(2,5,6))
+//    A setRow (2,new Vector(3,6,10))
 
     val (lambdas,vectors) = calculate(A.toComplex)
     println(lambdas)
