@@ -6,7 +6,7 @@ class ComplexVector(vs: Complex*) {
   val values = vs.toArray
   val length = values.length
 
-  lazy val norm: Double = sqrt(values.map(x => !x).sum)
+  lazy val norm: Double = sqrt(values.map(x => x.real*x.real).sum)
   lazy val normalized: ComplexVector = this map {case (_, v) => v/norm}
 
   def apply(i: Int): Complex = values(i)

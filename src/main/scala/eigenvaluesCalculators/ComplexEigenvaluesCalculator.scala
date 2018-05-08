@@ -8,16 +8,18 @@ import math.{sqrt,abs}
 
 object ComplexEigenvaluesCalculator {
 
-  def calculate(A: ComplexMatrix, tolerance: Double = 0.001): (List[Complex], ComplexMatrix) = {
+  def calculate(A: ComplexMatrix, tolerance: Double = 0.0001): (List[Complex], ComplexMatrix) = {
     val (ai,x) = householder(A)
     var Ai = ai
     var X = x
-
+//    println(s"A após householder:\n$Ai")
     do{
       val (q,r) = simplifiedJacobi(Ai)
       Ai = r * q
-      X = X*q
+      X = X * q
     }while(tridiagonalNoise(Ai)>tolerance)
+
+    println(Ai)
 
     if(A.isSymmetric) solveTD(Ai,X)
     else if (isUT(Ai, tolerance)) solveUT(Ai,X)
@@ -64,7 +66,7 @@ object ComplexEigenvaluesCalculator {
 
     for(j <- 0 until n-1){
       val Hj = getHj(Aj,j)
-      Aj = Hj * Aj * Hj
+      Aj = Hj * (Aj * Hj)
       H = H*Hj
     }
 
@@ -73,13 +75,18 @@ object ComplexEigenvaluesCalculator {
 
   private def getHj(A: ComplexMatrix, j: Int): ComplexMatrix = {
     val Vj = ComplexVectorHelper.createVector(A.shape._2)
-    for(k <- j+1 until A.shape._2) Vj set (k,A(j)(k))
+    for(k <- j+1 until A.shape._2) Vj set (k,A(k)(j))
 
     val V2 = ComplexVectorHelper.createVector(A.shape._2)
-    val v = if(Vj(j+1) > Complex(0,0)) -Vj.norm else Vj.norm
+    val v = if(Vj(j+1).real > 0) -Vj.norm else Vj.norm
     V2 set (j+1,Complex(v,0))
 
     val n = (Vj - V2).normalized
+//    println("Vj-V2:")
+//    println(Vj-V2)
+//    println("Normalizing:")
+//    println(n)
+//    println("----------------------")
 
     ComplexMatrixHelper.getIdentity(A.shape._2) - (n.transpose*n.asMatrix)*2
   }
@@ -94,22 +101,22 @@ object ComplexEigenvaluesCalculator {
       Aj = Jjt * Aj
       Qt = Jjt * Qt
     }
-
+    println(s"Aj:\n$Aj")
     (Qt.transpose, Aj)
   }
 
   def buildJijT(A: ComplexMatrix, i: Int, j: Int): ComplexMatrix = {
     val (m,n) = A.shape
-    val J = ComplexMatrixHelper.getIdentity(m)
+    val Jt = ComplexMatrixHelper.getIdentity(m)
 
-    val theta = if(A(j)(j)!= Complex(0,0)) math.atan(A(i)(j).real/A(j)(j).real) else math.Pi/2
+    val theta = if(A(j)(j).real != 0) math.atan(A(i)(j).real / A(j)(j).real) else math.Pi/2
 
-    J set ((j,j),math.cos(theta))
-    J set ((j,i),math.sin(theta))
-    J set ((i,j),-math.sin(theta))
-    J set ((i,i),math.cos(theta))
+    Jt set ((j,j),math.cos(theta))
+    Jt set ((j,i),math.sin(theta))
+    Jt set ((i,j),-math.sin(theta))
+    Jt set ((i,i),math.cos(theta))
 
-    J
+    Jt
   }
 
   def main(args: Array[String]): Unit = {
@@ -120,7 +127,7 @@ object ComplexEigenvaluesCalculator {
 //    A setRow (1,new Vector(4,5,6))
 //    A setRow (2,new Vector(7,8,10))
 
-//    //TD
+    //TD
     A setRow (0,new Vector(1,2,3))
     A setRow (1,new Vector(2,5,6))
     A setRow (2,new Vector(3,6,10))
