@@ -3,8 +3,9 @@ package eigenvaluesCalculators
 import entities.complex.{Complex, ComplexMatrix, ComplexVector}
 import entities.real.{Matrix, Vector}
 import helpers.complex.{ComplexMatrixHelper, ComplexVectorHelper}
+import org.scalactic.Tolerance
 
-import math.{sqrt,abs}
+import math.{abs, sqrt, pow}
 
 object ComplexEigenvaluesCalculator {
 
@@ -23,7 +24,7 @@ object ComplexEigenvaluesCalculator {
 
     if(A.isSymmetric) solveTD(Ai,X)
     else if (isUT(Ai, tolerance)) solveUT(Ai,X)
-    else (List[Complex](),Ai)
+    else solveUH(Ai,X,tolerance)
 
   }
 
@@ -50,6 +51,31 @@ object ComplexEigenvaluesCalculator {
     (lambdas,X*psi)
   }
 
+  private def solveUH(A: ComplexMatrix, X: ComplexMatrix, tolerance: Double): (List[Complex], ComplexMatrix) = {
+    var values: List[Complex] = List()
+
+    var j = 0
+
+    while(j<A.shape._2){
+      if(A(j+1)(j).real <= tolerance){
+        values +:= A(j+1)(j)
+        j += 1
+      }
+      else{
+        val trace = (A(j)(j)*A(j+1)(j+1)).real
+        val det = trace - (A(j+1)(j) * A(j)(j+1)).real
+        val delta = pow(trace,2) - 4 * det
+
+        val l1 = (Complex(sqrt(-delta),1)/2) + trace/2
+        val l2 = -(Complex(sqrt(-delta),1)/2) + trace/2
+
+        values ++= l1::(l2::Nil)
+        j = j+2
+      }
+    }
+
+    (values,X)
+  }
 
   private def tridiagonalNoise(A: ComplexMatrix): Double =
     sqrt((for(j <- 0 until A.shape._2-1) yield !A(j+1)(j)).sum)
