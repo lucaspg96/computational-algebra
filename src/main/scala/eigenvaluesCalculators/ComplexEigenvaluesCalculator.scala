@@ -74,7 +74,7 @@ object ComplexEigenvaluesCalculator {
       }
     }
 
-    (values,X)
+    (values,new ComplexMatrix(A.shape._1, A.shape._2))
   }
 
   private def tridiagonalNoise(A: ComplexMatrix): Double =
