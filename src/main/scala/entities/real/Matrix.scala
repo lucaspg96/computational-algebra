@@ -19,6 +19,14 @@ class Matrix(m: Int, n: Int) {
 
   def set(p: (Int, Int), v: Double): Unit = matrix(p._1).set(p._2, v)
 
+  def centralized: Matrix = {
+    val means = for(j <- 0 until n) yield columnAsVector(j).sum/m
+
+    this map {
+      case MatrixValue(_,j,v) => v - means(j)
+    }
+  }
+
   def isSymmetric: Boolean = {
     for {
       i <- 0 until m

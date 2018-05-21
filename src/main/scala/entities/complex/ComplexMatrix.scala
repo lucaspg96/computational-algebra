@@ -1,6 +1,7 @@
 package entities.complex
 
 import helpers.complex.{ComplexMatrixHelper, ComplexVectorHelper}
+import entities.real.Matrix
 
 class ComplexMatrix(m: Int, n: Int) {
   val matrix: Array[ComplexVector] = (for (_ <- 1 to m) yield ComplexVectorHelper.createVector(n)).toArray
@@ -27,6 +28,17 @@ class ComplexMatrix(m: Int, n: Int) {
     } return false
 
     true
+  }
+
+  def toReal: Matrix = {
+    val result = new Matrix(m, n)
+
+    for {
+      i <- 0 until m
+      j <- 0 until n
+    } result.set((i, j), this(i)(j).real)
+
+    result
   }
 
   def rowAsVector(r: Int): ComplexVector = matrix(r)
