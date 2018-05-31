@@ -5,8 +5,8 @@ import qr.{GramSchmidtOrtogonalization, HouseHolderOrtogonalization, JacobiOrtog
 
 object QRSolver extends Solver
 //    with GramSchmidtOrtogonalization
-//  with HouseHolderOrtogonalization
-  with JacobiOrtogonalization
+  with HouseHolderOrtogonalization
+//  with JacobiOrtogonalization
 {
 
   def solve(A: Matrix, y: Vector): Vector = {

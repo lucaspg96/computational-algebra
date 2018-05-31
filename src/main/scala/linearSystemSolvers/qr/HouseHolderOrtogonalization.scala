@@ -18,7 +18,7 @@ trait HouseHolderOrtogonalization extends QRConstructor {
 //      println(Hj)
 //      println("Is ortogonal? "+Hj.isOrtogonal)
       Aj = Hj * Aj
-      H = Hj * H
+      H = H * Hj
 //      println("\nUpdating H:")
 //      println(H)
 //      println("Is ortogonal? "+H.isOrtogonal)
