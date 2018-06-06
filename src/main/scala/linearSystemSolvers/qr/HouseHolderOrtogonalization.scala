@@ -30,7 +30,7 @@ trait HouseHolderOrtogonalization extends QRConstructor {
   }
 
   private def buildHj(A: Matrix, j: Int): Matrix = {
-    println("\nCreating H"+j)
+//    println("\nCreating H"+j)
     val (m,_) = A.shape
 //    println("\nA:")
 //    println(A)

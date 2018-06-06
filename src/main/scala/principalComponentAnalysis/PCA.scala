@@ -16,7 +16,7 @@ object PCA {
 
     val totalInfluence = S.diagonalAsVector.sum
 
-    var partialInfluence = 0
+    var partialInfluence = 0.0
 
     val components = S.diagonalAsVector.asList.takeWhile(l => {
       if((partialInfluence + l/totalInfluence) < sigma){

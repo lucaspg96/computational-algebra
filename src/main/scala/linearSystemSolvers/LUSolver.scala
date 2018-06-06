@@ -15,16 +15,16 @@ object LUSolver extends Solver{
       U = u
       currentDecomposedMatrix = A copy
     }
-//    println(L)
-//    println()
+    println(L)
+    println()
 //    println(y)
     val z = LSolver(L,y)
 
 //    println()
 
-//    println(U)
-//    println()
-//    println(z)
+    println(U)
+    println()
+    println(z)
     USolver(U,z)
 
   }
@@ -103,19 +103,19 @@ object LUSolver extends Solver{
 
   def main(args: Array[String]): Unit = {
     val A: Matrix = new Matrix(3)
-    A set ((0,0),1)
+    A set ((0,0),2)
     A set ((0,1),1)
     A set ((0,2),-1)
 
-    A set ((1,0),1)
-    A set ((1,1),-2)
-    A set ((1,2),5)
+    A set ((1,0),-3)
+    A set ((1,1),-1)
+    A set ((1,2),2)
 
-    A set ((2,0),4)
+    A set ((2,0),-2)
     A set ((2,1),1)
-    A set ((2,2),4)
+    A set ((2,2),2)
 
-    val y: Vector = new Vector(0, 21, 31)
+    val y: Vector = new Vector(8, -11, -3)
 
     val x = solve(A,y)
     println("\n"+x)
