@@ -67,7 +67,7 @@ object PowerMethodDisplaced {
       println(s"value: $lambda, vector: $fi")
     }
 
-//    val (lambda,vector) = displacedFind(A, 6.700000000000001)
+//    val (lambda,vector) = displacedFind(A, -1)
 //    println(lambda)
 //    println(vector)
 

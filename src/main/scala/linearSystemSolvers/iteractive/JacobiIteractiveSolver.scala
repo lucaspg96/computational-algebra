@@ -7,7 +7,7 @@ import linearSystemSolvers.Solver
 object JacobiIteractiveSolver extends Solver {
 
   override def solve(A: Matrix, y: Vector): Vector = {
-    val tolerance = 0.001
+    val tolerance = 0.01
     var oldX = VectorHelper.createVector(A.shape._2)
     var x: Vector = VectorHelper.createVector(A.shape._2)
     var i = 1
@@ -49,6 +49,9 @@ object JacobiIteractiveSolver extends Solver {
     A set((2, 0), 2)
     A set((2, 1), 1)
     A set((2, 2), 9)
+
+    println("A:")
+    println(A.toLatex)
 
     val solution = new Vector(1,1,1)
 

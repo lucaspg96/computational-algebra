@@ -14,7 +14,7 @@ object CholeskySolver extends Solver{
 
     for{
       i <- 0 until m
-      j <- 0 until n
+      j <- 0 to i
     }{
       if(i==j) { //diagonal
         if (i == 0) //first
@@ -42,6 +42,12 @@ object CholeskySolver extends Solver{
 
   def solve(A: Matrix, y: Vector): Vector = {
     val cholesky = getCholeskyMatrix(A)
+
+    println("A:")
+    println(A.toLatex)
+
+    println("Cholesky matrix:")
+    println(cholesky.toLatex)
 
     val z = FirstSolver(cholesky,y)
 

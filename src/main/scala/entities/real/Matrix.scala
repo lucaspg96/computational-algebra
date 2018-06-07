@@ -56,6 +56,8 @@ class Matrix(m: Int, n: Int) {
 
   override def toString: String = (for (row <- matrix) yield row mkString("|", ",", "|")) mkString "\n"
 
+  def toLatex: String = (for (row <- matrix) yield row mkString("", " & ", "\\\\")) mkString "\n"
+
   def copy: Matrix = this map { case MatrixValue(_, _, v) => v }
 
   def map(f: MatrixValue => Double): Matrix = {

@@ -7,7 +7,7 @@ import linearSystemSolvers.Solver
 object GaussSeidelIteractiveSolver extends Solver {
 
   override def solve(A: Matrix, y: Vector): Vector = {
-    val tolerance = 0.001
+    val tolerance = 0.01
     var oldX = VectorHelper.createVector(A.shape._2)
     var x: Vector = VectorHelper.createVector(A.shape._2)
     var i = 1

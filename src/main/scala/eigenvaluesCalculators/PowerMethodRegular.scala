@@ -14,6 +14,7 @@ object PowerMethodRegular extends EigenvaluesCalculator {
       lambdaOld = lambda
       q = (A*q).normalized
       lambda = (q*(A*q))/(q*q)
+      println(s"lambda: $lambda\tvector: $q")
     }while(relativeError(lambda,lambdaOld) > tolerance)
 
     (lambda,q)
@@ -27,6 +28,8 @@ object PowerMethodRegular extends EigenvaluesCalculator {
     A setRow (0,new Vector(1,2,3))
     A setRow (1,new Vector(4,5,6))
     A setRow (2,new Vector(7,8,10))
+
+    println(A.toLatex)
 
     val solution = 16.7075
 

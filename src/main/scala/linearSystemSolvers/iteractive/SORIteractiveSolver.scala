@@ -7,8 +7,8 @@ import linearSystemSolvers.Solver
 object SORIteractiveSolver extends Solver {
 
   override def solve(A: Matrix, y: Vector): Vector = {
-    val tolerance = 0.001
-    val w = 0.9
+    val tolerance = 0.01
+    val w = 1.1
     var oldX = VectorHelper.createVector(A.shape._2)
     var x: Vector = VectorHelper.createVector(A.shape._2)
     var i = 1

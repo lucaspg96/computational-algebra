@@ -20,6 +20,7 @@ object PowerMethodInverse extends EigenvaluesCalculator {
 //      println(s"q: $q")
 //      println(s"q: $q")
       lambda = (q*(A*q))/(q*q)
+//      println(s"lambda: $lambda\tvector: $q")
 //      println(s"lambda: $lambda")
     }while(relativeError(lambda,lambdaOld) > tolerance)
 

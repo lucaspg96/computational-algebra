@@ -15,16 +15,16 @@ object LUSolver extends Solver{
       U = u
       currentDecomposedMatrix = A copy
     }
-    println(L)
-    println()
+//    println(L)
+//    println()
 //    println(y)
     val z = LSolver(L,y)
 
 //    println()
 
-    println(U)
-    println()
-    println(z)
+//    println(U)
+//    println()
+//    println(z)
     USolver(U,z)
 
   }
