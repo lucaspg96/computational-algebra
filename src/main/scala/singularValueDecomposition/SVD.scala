@@ -2,7 +2,7 @@ package singularValueDecomposition
 
 import eigenvaluesCalculators.ComplexEigenvaluesCalculator
 import entities.complex.{Complex, ComplexMatrix}
-import entities.real.Matrix
+import entities.real.{Matrix, Vector}
 import helpers.complex.ComplexMatrixHelper
 
 import math.sqrt
@@ -27,5 +27,24 @@ class SVD(A: ComplexMatrix, tolerance: Double = 0.0001) {
 
   lazy val V: ComplexMatrix = ComplexEigenvaluesCalculator.calculate(A.transpose * A, tolerance)._2
 
+}
 
+object RunSVD extends App {
+  val A = new Matrix(3)
+
+  A setRow (0,new Vector(1,2,3))
+  A setRow (1,new Vector(4,5,6))
+  A setRow (2,new Vector(7,8,10))
+
+  val svd = new SVD(A)
+
+  println("U:")
+  println(svd.U)
+  println("-----------")
+  println("S:")
+  println(svd.S)
+  println("-----------")
+  println("V:")
+  println(svd.V)
+  println("-----------")
 }
