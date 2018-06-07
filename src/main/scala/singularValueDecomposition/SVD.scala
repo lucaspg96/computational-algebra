@@ -39,12 +39,12 @@ object RunSVD extends App {
   val svd = new SVD(A)
 
   println("U:")
-  println(svd.U)
+  println(svd.U.toReal.toLatex)
   println("-----------")
   println("S:")
-  println(svd.S)
+  println(svd.S.toReal.toLatex)
   println("-----------")
   println("V:")
-  println(svd.V)
+  println(svd.V.toReal.toLatex)
   println("-----------")
 }

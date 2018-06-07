@@ -9,19 +9,26 @@ import math.{abs, sqrt, pow}
 
 object ComplexEigenvaluesCalculator {
 
-  def calculate(A: ComplexMatrix, tolerance: Double = 0.000001): (List[Complex], ComplexMatrix) = {
+  def calculate(A: ComplexMatrix, tolerance: Double = 0.001): (List[Complex], ComplexMatrix) = {
     val (ai,x) = householder(A)
     var Ai = ai
     var X = x
 //    println(s"A após householder:\n$Ai")
+    var oldNoise, newNoise = 0.0
     do{
+      oldNoise = newNoise
       val (q,r) = simplifiedJacobi(Ai)
       Ai = r * q
       X = X * q
-    }while(tridiagonalNoise(Ai)>tolerance)
+//      println("Ai:")
+//      println(Ai)
+      newNoise = tridiagonalNoise(Ai)
+//      println(newNoise)
+    }while(math.abs(newNoise-oldNoise)>tolerance)
 
 //    println(Ai)
-
+//    println("Ai:")
+//    println(Ai.toReal.toLatex)
     if(A.isSymmetric) solveTD(Ai,X)
     else if (isUT(Ai, tolerance)) solveUT(Ai,X)
     else solveUH(Ai,X,tolerance)
@@ -57,17 +64,22 @@ object ComplexEigenvaluesCalculator {
     var j = 0
 
     while(j<A.shape._2){
+//      println(s"Checking subdiagonal $j element: ${A(j+1)(j)}")
       if(A(j+1)(j).real <= tolerance){
-        values +:= A(j+1)(j)
+//        println("It is lte than tolerance")
+        values +:= A(j)(j)
         j += 1
       }
       else{
-        val trace = (A(j)(j)*A(j+1)(j+1)).real
-        val det = trace - (A(j+1)(j) * A(j)(j+1)).real
+//        println("It is NOT lte than tolerance")
+        val trace = (A(j)(j)+A(j+1)(j+1)).real
+//        println(s"trace: $trace")
+        val det = (A(j)(j)*A(j+1)(j+1)).real - (A(j+1)(j).real * A(j)(j+1).real)
+//        println(s"determinant: $det")
         val delta = pow(trace,2) - 4 * det
 
-        val l1 = (Complex(sqrt(-delta),1)/2) + trace/2
-        val l2 = -(Complex(sqrt(-delta),1)/2) + trace/2
+        val l1 = Complex(0,sqrt(-delta)/2) + trace/2
+        val l2 = Complex(0,-sqrt(-delta)/2) + trace/2
 
         values ++= l1::(l2::Nil)
         j = j+2
@@ -78,7 +90,7 @@ object ComplexEigenvaluesCalculator {
   }
 
   private def tridiagonalNoise(A: ComplexMatrix): Double =
-    sqrt((for(j <- 0 until A.shape._2-1) yield !A(j+1)(j)).sum)
+    (for(j <- 0 until A.shape._2-1) yield math.abs(A(j+1)(j).real)).sum
 
   private def isUT(A: ComplexMatrix, tolerance: Double): Boolean =
     (for{
@@ -149,18 +161,26 @@ object ComplexEigenvaluesCalculator {
   }
 
   def main(args: Array[String]): Unit = {
-    val A = new Matrix(3)
+    val A = new Matrix(5)
 
-    //UT
-    A setRow (0,new Vector(1,2,3))
-    A setRow (1,new Vector(4,5,6))
-    A setRow (2,new Vector(7,8,10))
+//    //UT
+//    A setRow (0,new Vector(1,2,3))
+//    A setRow (1,new Vector(4,5,6))
+//    A setRow (2,new Vector(7,8,10))
 
 //    //TD
 //    A setRow (0,new Vector(1,2,3))
 //    A setRow (1,new Vector(2,5,6))
 //    A setRow (2,new Vector(3,6,10))
 
+    //UH
+    A setRow (0,new Vector(1,1,3,2,5))
+    A setRow (1,new Vector(6,7,8,9,10))
+    A setRow (2,new Vector(2,3,3,4,5))
+    A setRow (3,new Vector(1,3,1,1,1))
+    A setRow (4,new Vector(2,1,1,3,5))
+
+//    println(A.toLatex)
     val (lambdas,vectors) = calculate(A.toComplex)
     println(lambdas)
     println(vectors)
