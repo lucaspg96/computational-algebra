@@ -4,8 +4,8 @@ import entities.real.{Matrix, Vector}
 import qr.{GramSchmidtOrtogonalization, HouseHolderOrtogonalization, JacobiOrtogonalization}
 
 object QRSolver extends Solver
-//    with GramSchmidtOrtogonalization
-  with HouseHolderOrtogonalization
+    with GramSchmidtOrtogonalization
+//  with HouseHolderOrtogonalization
 //  with JacobiOrtogonalization
 {
 
@@ -23,7 +23,7 @@ object QRSolver extends Solver
   def Substitution(A: Matrix,y: Vector): Vector = {
     val (m,n) = A.shape
     var solution = List[Double]()
-    for(i <- m-1 to 0 by -1){
+    for(i <- n-1 to 0 by -1){
       val row = A.rowAsVector(i)
       //      println(row+" = "+auxiliar_y(i))
 
@@ -44,38 +44,31 @@ object QRSolver extends Solver
   }
 
   def main(args: Array[String]): Unit = {
-    val A: Matrix = new Matrix(3)
-    A set((0, 0), 1)
-    A set((0, 1), 1)
-    A set((0, 2), -1)
-
-    A set((1, 0), 1)
-    A set((1, 1), -2)
-    A set((1, 2), 5)
-
-    A set((2, 0), 4)
-    A set((2, 1), 1)
-    A set((2, 2), 4)
-
-    val solution = new Vector(2,3,5)
-
-    val y: Vector = new Vector(0, 21, 31)
-
-//    A set((0, 0), 3)
-//    A set((0, 1), 2)
+//    val A: Matrix = new Matrix(3)
+//    A set((0, 0), 1)
+//    A set((0, 1), 1)
 //    A set((0, 2), -1)
 //
-//    A set((1, 0), 2)
+//    A set((1, 0), 1)
 //    A set((1, 1), -2)
-//    A set((1, 2), 4)
+//    A set((1, 2), 5)
 //
-//    A set((2, 0), -1)
-//    A set((2, 1), 0.5)
-//    A set((2, 2), -1)
+//    A set((2, 0), 4)
+//    A set((2, 1), 1)
+//    A set((2, 2), 4)
 //
-//    val solution = new Vector(1,-2,-2)
+//    val solution = new Vector(2,3,5)
 //
-//    val y: Vector = new Vector(1, -2, 0)
+//    val y: Vector = new Vector(0, 21, 31)
+
+    val A: Matrix = new Matrix(3,2)
+    A setRow (0, new Vector(1,-1))
+    A setRow (1, new Vector(1, 1))
+    A setRow (2, new Vector(2,1))
+
+    val y = new Vector(2,4,8)
+
+    val solution = new Vector(23.0/7.0, 8.0/7.0)
 
     val x = solve(A, y)
     println("---------------------")

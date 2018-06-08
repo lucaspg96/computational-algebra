@@ -25,7 +25,6 @@ trait JacobiOrtogonalization extends QRConstructor {
 //        println("\nJt:")
 //        println(Jt)
       }
-      println(noise(Ai))
           }while(noise(Ai) > 0.001)
 
     val R = Ai map {case MatrixValue(i,j,v) => if(i > j) 0 else v}

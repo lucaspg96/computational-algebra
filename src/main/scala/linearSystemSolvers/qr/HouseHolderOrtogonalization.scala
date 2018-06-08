@@ -9,9 +9,6 @@ trait HouseHolderOrtogonalization extends QRConstructor {
     var H = MatrixHelper.getIdentity(m)
     var Aj = A copy
 
-    println("\nH:")
-    println(H)
-
     for(j <- 0 until n){
       val Hj = buildHj(Aj,j)
 //      println("\nH"+j+":")

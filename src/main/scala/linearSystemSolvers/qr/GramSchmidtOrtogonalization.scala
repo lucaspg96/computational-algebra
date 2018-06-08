@@ -23,7 +23,6 @@ trait GramSchmidtOrtogonalization extends QRConstructor {
         Qs :+= Vi.normalized
       }
     }
-  println(Qs mkString "\n")
     val Q = new Matrix(m,n)
     for(j <- 0 until n) Q setColumn(j,Qs(j))
 
