@@ -1,6 +1,6 @@
 package singularValueDecomposition
 
-import eigenvaluesCalculators.ComplexEigenvaluesCalculator
+import eigenvaluesCalculators.SimilarityTransformation
 import entities.complex.{Complex, ComplexMatrix}
 import entities.real.{Matrix, Vector}
 import helpers.complex.ComplexMatrixHelper
@@ -13,7 +13,7 @@ class SVD(A: ComplexMatrix, tolerance: Double = 0.0001) {
 
   val (m, n) = A.shape
 
-  val (lambdas, vectors) = ComplexEigenvaluesCalculator.calculate(A * A.transpose, tolerance)
+  val (lambdas, vectors) = SimilarityTransformation.calculate(A * A.transpose, tolerance)
 
   lazy val S: ComplexMatrix = ComplexMatrixHelper.getIdentity(m, n)
   for {
@@ -25,7 +25,7 @@ class SVD(A: ComplexMatrix, tolerance: Double = 0.0001) {
 
   lazy val U: ComplexMatrix = vectors
 
-  lazy val V: ComplexMatrix = ComplexEigenvaluesCalculator.calculate(A.transpose * A, tolerance)._2
+  lazy val V: ComplexMatrix = SimilarityTransformation.calculate(A.transpose * A, tolerance)._2
 
 }
 

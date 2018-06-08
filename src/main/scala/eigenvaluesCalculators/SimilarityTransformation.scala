@@ -3,17 +3,16 @@ package eigenvaluesCalculators
 import entities.complex.{Complex, ComplexMatrix, ComplexVector}
 import entities.real.{Matrix, Vector}
 import helpers.complex.{ComplexMatrixHelper, ComplexVectorHelper}
-import org.scalactic.Tolerance
 
 import math.{abs, sqrt, pow}
 
-object ComplexEigenvaluesCalculator {
+object SimilarityTransformation {
 
   def calculate(A: ComplexMatrix, tolerance: Double = 0.001): (List[Complex], ComplexMatrix) = {
     val (ai,x) = householder(A)
     var Ai = ai
     var X = x
-//    println(s"A após householder:\n$Ai")
+    println(s"A após householder:\n${Ai.toReal.toLatex}")
     var oldNoise, newNoise = 0.0
     do{
       oldNoise = newNoise
@@ -24,11 +23,11 @@ object ComplexEigenvaluesCalculator {
 //      println(Ai)
       newNoise = tridiagonalNoise(Ai)
 //      println(newNoise)
-    }while(math.abs(newNoise-oldNoise)>tolerance)
+    }while(math.abs(newNoise-oldNoise)>tolerance/10)
 
 //    println(Ai)
-//    println("Ai:")
-//    println(Ai.toReal.toLatex)
+    println("Ai:")
+    println(Ai.toReal.toLatex)
     if(A.isSymmetric) solveTD(Ai,X)
     else if (isUT(Ai, tolerance)) solveUT(Ai,X)
     else solveUH(Ai,X,tolerance)
@@ -51,8 +50,8 @@ object ComplexEigenvaluesCalculator {
         .foldLeft(Complex(0,0))((acc,c) => acc+c)
       val xi = (-A(j)(i) - s)/(A(j)(j) - A(i)(i))
       psi set ((j,i),xi)
-      println("Psi: ")
-      println(psi)
+//      println("Psi: ")
+//      println(psi)
     }
 
     (lambdas,X*psi)
@@ -163,24 +162,28 @@ object ComplexEigenvaluesCalculator {
   def main(args: Array[String]): Unit = {
     val A = new Matrix(5)
 
-//    //UT
-//    A setRow (0,new Vector(1,2,3))
-//    A setRow (1,new Vector(4,5,6))
-//    A setRow (2,new Vector(7,8,10))
-
-//    //TD
-//    A setRow (0,new Vector(1,2,3))
-//    A setRow (1,new Vector(2,5,6))
-//    A setRow (2,new Vector(3,6,10))
-
-    //UH
+    //SM
     A setRow (0,new Vector(1,1,3,2,5))
-    A setRow (1,new Vector(6,7,8,9,10))
-    A setRow (2,new Vector(2,3,3,4,5))
-    A setRow (3,new Vector(1,3,1,1,1))
-    A setRow (4,new Vector(2,1,1,3,5))
+    A setRow (1,new Vector(1,7,8,9,8))
+    A setRow (2,new Vector(3,8,9,0,0))
+    A setRow (3,new Vector(2,9,0,1,1))
+    A setRow (4,new Vector(5,8,0,1,5))
 
-//    println(A.toLatex)
+//    //UT
+//    A setRow (0,new Vector(1,1,3,2,5))
+//    A setRow (1,new Vector(6,7,8,9,8))
+//    A setRow (2,new Vector(2,3,3,0,0))
+//    A setRow (3,new Vector(1,3,1,1,1))
+//    A setRow (4,new Vector(2,1,0,0,5))
+
+//    //UH
+//    A setRow (0,new Vector(1,1,3,2,5))
+//    A setRow (1,new Vector(6,7,8,9,10))
+//    A setRow (2,new Vector(2,3,3,4,5))
+//    A setRow (3,new Vector(1,3,1,1,1))
+//    A setRow (4,new Vector(2,1,1,3,5))
+
+    println(A.toLatex)
     val (lambdas,vectors) = calculate(A.toComplex)
     println(lambdas)
     println(vectors)
