@@ -5,27 +5,22 @@ import entities.real.{Matrix, Vector}
 object LeastSquaresSolver extends Solver{
 
   def solve(A: Matrix, y: Vector): Vector = {
-    GaussianEliminationSolver.setTotalPivote
-    GaussianEliminationSolver.solve(A.transpose*A, A.transpose*y)
+    LUSolver.solve(A.transpose*A, A.transpose*y)
   }
 
   def main(args: Array[String]): Unit = {
-    val A: Matrix = new Matrix(3)
-    A set ((0,0),1)
-    A set ((0,1),1)
-    A set ((0,2),-1)
+    val A: Matrix = new Matrix(3,2)
+    A setRow (0, new Vector(1,-1))
+    A setRow (1, new Vector(1, 1))
+    A setRow (2, new Vector(2,1))
 
-    A set ((1,0),1)
-    A set ((1,1),-2)
-    A set ((1,2),5)
+    val y = new Vector(2,4,8)
 
-    A set ((2,0),4)
-    A set ((2,1),1)
-    A set ((2,2),4)
+    val solution = new Vector(23.0/7.0, 8.0/7.0)
 
-    val y: Vector = new Vector(0, 21, 31)
-
+    println(A)
     val x = solve(A,y)
+    println(s"Expected: $solution")
     println("\n"+x)
   }
 }

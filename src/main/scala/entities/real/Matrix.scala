@@ -79,7 +79,7 @@ class Matrix(m: Int, n: Int) {
     return this * this.transpose == MatrixHelper.getIdentity(m)
   }
 
-  def transpose: Matrix = this map { case MatrixValue(i, j, _) => matrix(j)(i) }
+  def transpose: Matrix = new Matrix(n,m) map { case MatrixValue(i, j, _) => matrix(j)(i)}
 
   def +(b: Matrix): Matrix =
     if (b.shape == shape) this map { case MatrixValue(i, j, v) => v + b(i)(j) }
