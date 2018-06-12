@@ -13,15 +13,15 @@ object SteepestDescentIteractiveSolver extends Solver {
     val tolerance = 0.001
     var xk = VectorHelper.createVector(A.shape._2)
     var k = 0
-
+    println(A.toLatex)
     do {
       val Rxk = gradient(A, xk, y)
-      println(s"Rx$k = $Rxk")
-      println(s"Rx$k norm = ${Rxk.norm}")
+//      println(s"Rx$k = $Rxk")
+//      println(s"Rx$k norm = ${Rxk.norm}")
 
       val alpha: Double = (Rxk * Rxk) / (Rxk * (A * Rxk))
-      println(s"alpha: $alpha")
-      println(s"Rx$k * alpha = ${Rxk * alpha}")
+//      println(s"alpha: $alpha")
+//      println(s"Rx$k * alpha = ${Rxk * alpha}")
 
       k += 1
 

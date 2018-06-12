@@ -4,18 +4,18 @@ import entities.real.{Matrix, Vector}
 import qr.{GramSchmidtOrtogonalization, HouseHolderOrtogonalization, JacobiOrtogonalization}
 
 object QRSolver extends Solver
-    with GramSchmidtOrtogonalization
+//    with GramSchmidtOrtogonalization
 //  with HouseHolderOrtogonalization
-//  with JacobiOrtogonalization
+  with JacobiOrtogonalization
 {
 
   def solve(A: Matrix, y: Vector): Vector = {
-
+    println(A.toLatex)
     getQR(A)
     println("\nQ:")
-    println(Q)
+    println(Q.toLatex)
     println("\nR:")
-    println(R)
+    println(R.toLatex)
 
     Substitution(R, Q.transpose * y)
   }
