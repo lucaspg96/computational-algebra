@@ -9,7 +9,11 @@ object SteepestDescentIteractiveSolver extends Solver {
   private def gradient(A: Matrix, x: Vector, b: Vector): Vector =
     (A * x) - b
 
-  override def solve(A: Matrix, y: Vector): Vector = {
+  override def solve(A1: Matrix, y1: Vector): Vector = {
+
+    val A = A1.transpose*A1
+    val y = A1.transpose*y1
+
     val tolerance = 0.001
     var xk = VectorHelper.createVector(A.shape._2)
     var k = 0
@@ -34,30 +38,30 @@ object SteepestDescentIteractiveSolver extends Solver {
   }
 
   def main(args: Array[String]): Unit = {
-//    val A: Matrix = new Matrix(3)
-//    A set((0, 0), 8)
-//    A set((0, 1), 1)
-//    A set((0, 2), -1)
-//
-//    A set((1, 0), 1)
-//    A set((1, 1), -7)
-//    A set((1, 2), 2)
-//
-//    A set((2, 0), 2)
-//    A set((2, 1), 1)
-//    A set((2, 2), 9)
-//
-//    val solution = new Vector(1, 1, 1)
-//
-//    val y: Vector = new Vector(8, -4, 12)
+    val A: Matrix = new Matrix(3)
+    A set((0, 0), 8)
+    A set((0, 1), 1)
+    A set((0, 2), -1)
 
-    val A: Matrix = new Matrix(2)
-    A setRow (0, new Vector(1,1))
-    A setRow (1, new Vector(2,3))
+    A set((1, 0), 1)
+    A set((1, 1), -7)
+    A set((1, 2), 2)
 
-    val solution = new Vector(1, 2)
+    A set((2, 0), 2)
+    A set((2, 1), 1)
+    A set((2, 2), 9)
 
-    val y: Vector = new Vector(3,8)
+    val solution = new Vector(1,1,1)
+
+    val y: Vector = new Vector(8,-4,12)
+
+//    val A: Matrix = new Matrix(2)
+//    A setRow (0, new Vector(1,1))
+//    A setRow (1, new Vector(2,3))
+//
+//    val solution = new Vector(1, 2)
+//
+//    val y: Vector = new Vector(3,8)
 
     val x = solve(A, y)
     println("---------------------")
